@@ -1,0 +1,62 @@
+问题描述：Ramen经过长时间的研究，终于研发出了能够跃迁的宇宙飞船。现在，他想要前往致远星。假设地球和致远星都在一个坐标轴上，其中地球位于坐标n，而致远星位于坐标k。而Ramen的飞船支持以下两种运动方式：
+1.飞行：在一个时间单位中，能够从坐标x移动到x-1或x+1；
+2.跃迁：在一个时间单位中，能够直接从x跃迁到2x。
+现在，Ramen想知道，他需要多长时间才能到达致远星？
+
+输入：两个值，分别代表n和k。(0 ≤ n, k ≤ 100,000)
+
+输出：输出Ramen最少需要的时间。
+
+eg：输入：5 17
+输出：4
+解释：Ramen的行走轨迹为：5-10-9-18-17
+
+cpp代码:
+
+#include<iostream>
+#include<queue> //！！！！！！！导入queue库，使用了函数：push、pop、front
+
+using namespace std;
+
+queue<int>q;  //queue创建对象的格式
+bool yn[100001]={}; //标记是否走过
+int pace[100001]={}; //存储到每点的距离
+
+int bfs(int n, int k){
+	int temp;
+	
+	q.push(n);
+	yn[n]=1;
+	pace[n]=0;
+	while(q.size()){
+		int t = q.front();
+		q.pop();
+		for(int i=0;i<3;i++){ //for配合switch做出三种操作分支 
+			switch(i){
+				case 0:temp = t+1;break;
+				case 1:temp = t-1;break;
+				case 2:temp = t*2;break;
+			}
+			if(temp<0||temp>100000)continue;
+			if(yn[temp]==1)continue;
+			if(temp==k) return pace[t]+1;
+			yn[temp] = 1;
+			pace[temp] =  pace[t]+1;
+			q.push(temp);
+			
+		}
+	} 
+}
+
+int main(){
+	int n,k;
+	cin>>n>>k;
+	
+	if(n>=k){
+		cout<<(n-k);
+	}
+	else{
+		cout<<bfs(n,k);
+	}
+	
+}
