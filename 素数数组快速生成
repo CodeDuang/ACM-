@@ -1,0 +1,83 @@
+题目：质数
+Goldbach's conjecture is one of the oldest unsolved problems in number theory and in all of mathematics. It states:
+
+Every even integer, greater than 2, can be expressed as the sum of two primes [1].
+
+Your task is to check whether this conjecture holds for integers up to 107.
+
+Input：
+Input starts with an integer T (≤ 300), denoting the number of test cases.
+
+Each case starts with a line containing an integer n (4 ≤ n ≤ 107, n is even).
+
+Output
+For each case, print the case number and the number of ways you can express n as sum of two primes. To be more specific, we want to find the number of (a, b) where:
+
+Both a and b are prime,
+a + b = n and
+a ≤ b.
+
+Sample Input
+2
+6
+4
+
+Sample Output
+Case 1: 1
+Case 2: 1
+
+Note
+[1] An integer is said to be prime, if it is divisible by exactly two different integers. First few primes are {2, 3, 5, 7, 11, 13, …}.
+
+
+解决代码：
+#include<iostream>
+#include<cstdio>
+#include<vector>
+
+using namespace std;
+
+vector<int> outt;
+
+const long N = 10000005;
+bool prime[N];
+int p[N/10],pn;
+
+void no_prime(){   //学习！！！！ 
+	pn=0;
+	prime[0] = prime[1] = true;
+	for(long long i = 2;i<N; i++){
+		if(!prime[i]){
+			p[pn++] = i;
+			for(long long j = i*i; j<N; j+=i){
+				prime[j] = true;
+			}
+		}
+	}
+}
+
+
+int main(){
+	no_prime();
+	int n;
+	scanf("%d",&n);
+	while(n--){
+		int num;
+
+		scanf("%d",&num);
+		int mid = num/2;
+		int sum = 0;		
+		for(int i = 0; p[i]<=mid; i++){
+			if(!prime[num-p[i]]) sum++;
+		}
+		
+		outt.push_back(sum);
+	}
+	
+	for(int i = 0; i < outt.size(); i++){
+		printf("Case %d: %d\n",i+1,outt[i]);
+	}
+	
+} 
+
+提交网站：https://vjudge.net/contest/467026#problem/B  （密码：suse）
